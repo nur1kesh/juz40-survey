@@ -1,0 +1,18 @@
+{
+  "name": "juz40-survey",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JUZ40 курстан шыққан оқушыларға арналған сауалнама және аналитика",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check insights.js && node --check store.js && node --check store-file.js && node --check store-pg.js && node --check xlsx.js && node --check public/survey.js && node --check public/admin.js && node --check scripts/seed-demo.js",
+    "test": "node --test test/smoke.test.js",
+    "test:pg": "node --test test/smoke.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.23.0"
+  }
+}

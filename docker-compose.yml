@@ -1,0 +1,36 @@
+# Іске қосу: docker compose up -d --build   (алдымен .env файлын толтырыңыз)
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: juz40
+      POSTGRES_USER: juz40
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD орнатыңыз}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U juz40 -d juz40"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://juz40:${POSTGRES_PASSWORD}@db:5432/juz40
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD орнатыңыз}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5.6-luna}
+      TRUST_PROXY: ${TRUST_PROXY:-0}
+      AUTO_ANALYZE: ${AUTO_ANALYZE:-0}
+      AI_DAILY_TOKEN_LIMIT: ${AI_DAILY_TOKEN_LIMIT:-0}
+
+volumes:
+  pgdata:

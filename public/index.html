@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JUZ40 Survey</title>
+<meta name="description" content="JUZ40 курсы туралы қысқа сауалнама">
+<meta name="robots" content="noindex">
+<link rel="preload" href="/fonts/Onest.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0D5B6C">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="hero">
+  <span class="fi f1" data-icon="smile"></span><span class="fi f2" data-icon="sparkles"></span><span class="fi f3" data-icon="message-square-text"></span><span class="fi f4" data-icon="thumbs-up"></span>
+  <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+  <div class="in">
+    <span class="mark"><i></i>JUZ40</span>
+    <h1 id="heroTitle">Курс туралы <em>пікіріңіз</em></h1>
+    <p id="heroText">Сіздің жауабыңыз курсты жақсартуға көмектеседі. Әр сөзіңіз біз үшін маңызды.</p>
+    <div class="badges"><span class="badge"><i data-icon="clock"></i>2–3 минут</span><span class="badge"><i data-icon="lock"></i>Анонимді</span><span class="badge"><i data-icon="message-square-text"></i>5 қысқа сұрақ</span></div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44C220 92 470 6 720 34s520 52 720-16V80H0Z"/></svg>
+</header>
+
+<div class="steps" id="steps"><div class="in"><div class="segs" id="segs"><i></i><i></i><i></i><i></i></div><span id="progress">0 / 4</span></div></div>
+
+<main class="wrap" id="formView">
+  <form class="stack" id="survey" novalidate>
+    <div class="hp" aria-hidden="true"><input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></div>
+    <section class="card q" data-q="score" id="q-score">
+      <div class="qn">1</div>
+      <div class="qbody">
+        <h2 id="q1t">JUZ40 курсына көңіліңіз қаншалықты толды? 0-ден 10-ға дейін бағалаңыз</h2>
+        <div class="face-wrap" aria-hidden="true"><div class="face" id="face"></div><div class="bignum" id="bignum">–<small>/10</small></div></div>
+        <div class="scale" role="radiogroup" aria-labelledby="q1t" id="scale"></div>
+        <div class="scale-ends"><span><i data-icon="frown"></i>0 — мүлдем көңілім толмады</span><span><i data-icon="smile"></i>10 — толықтай көңілім толды</span></div>
+        <div class="scale-read" id="scaleRead" aria-live="polite"></div>
+        <div class="err" role="alert" id="err-score"></div>
+      </div>
+    </section>
+
+    <section class="card q" data-q="expectation">
+      <div class="qn">2</div>
+      <div class="qbody">
+        <h2 id="q2t">JUZ40 сіздің бастапқы күткеніңізді қаншалықты ақтады?</h2>
+        <div class="opts" role="radiogroup" aria-labelledby="q2t" id="expOpts"></div>
+        <div id="reasonBox" class="hidden">
+          <label class="fl" for="expReason">Нені күттіңіз және не ақталмай қалды?</label>
+          <textarea id="expReason" maxlength="1500" placeholder="Мысалы: практикаға көбірек көңіл бөлінеді деп ойлаған едім, бірақ сабақтар көбіне теория болды"></textarea>
+        </div>
+        <div class="err" role="alert" id="err-expectation"></div>
+      </div>
+    </section>
+
+    <section class="card q" data-q="liked">
+      <div class="qn">3</div>
+      <div class="qbody">
+        <h2>Курста сізге ең ұнаған нәрсе</h2>
+        <p class="hint">Бірнешеуін таңдауға болады</p>
+        <div class="chips" id="likedChips"></div>
+        <div id="likedOtherBox" class="hidden">
+          <label class="fl" for="likedOther">Не ұнады?</label>
+          <input type="text" id="likedOther" maxlength="300">
+        </div>
+        <div class="err" role="alert" id="err-liked"></div>
+      </div>
+    </section>
+
+    <section class="card q" data-q="issues">
+      <div class="qn">4</div>
+      <div class="qbody">
+        <h2>Оқу кезінде сізге қиындық немесе қолайсыздық тудырған жағдайлар болды ма?</h2>
+        <p class="hint">Бірнешеуін таңдауға болады</p>
+        <div class="chips" id="issueChips"></div>
+        <div id="issueDetailBox" class="hidden">
+          <label class="fl" for="issueDetail">Таңдаған себептеріңіз бойынша мәселені толығырақ жазсаңыз</label>
+          <textarea id="issueDetail" maxlength="2000" placeholder="Мысалы: тапсырмалар өте көп болды, күнде үлгеру қиын болды"></textarea>
+        </div>
+        <div class="err" role="alert" id="err-issues"></div>
+      </div>
+    </section>
+
+    <section class="card q" data-q="suggestion">
+      <div class="qn">5</div>
+      <div class="qbody">
+        <h2><label for="suggestion">Курсты жақсарту бойынша айтар ұсынысыңыз</label></h2>
+        <textarea id="suggestion" maxlength="2000"></textarea>
+      </div>
+    </section>
+
+    <div class="submit">
+      <button class="btn big" id="submitBtn" type="button">Жауапты жіберу <i data-icon="arrow-right"></i></button>
+      <div class="err" role="alert" id="err-submit"></div>
+    </div>
+  </form>
+  <p class="foot">Жауаптарыңыз үшінші тұлғаларға берілмейді және тек курс сапасын арттыру үшін пайдаланылады.</p>
+</main>
+
+<main class="wrap hidden" id="thanksView">
+  <div class="card thanks">
+    <div class="big" id="bigCheck"><svg viewBox="0 0 120 120" aria-hidden="true"><rect class="bo" x="3" y="3" width="114" height="114" rx="34" pathLength="100"/><path class="bk" d="M37 63 L54 80 L85 42" pathLength="60"/></svg><i class="sp s1"></i><i class="sp s2"></i><i class="sp s3"></i></div>
+    <h1>Жауабыңыз қабылданды</h1>
+    <div class="thx-line" aria-hidden="true"></div>
+    <p class="muted" style="max-width:44ch;margin:0 auto">Пікіріңізді ескеретін боламыз. Сізге оқуда және алдағы жоспарларыңызда сәттілік тілейміз.</p>
+    <p id="againBox" class="hidden" style="margin:26px 0 0"><button class="btn ghost small" id="again" type="button">Жаңа жауап жіберу</button></p>
+  </div>
+</main>
+<canvas id="confetti"></canvas>
+
+<script src="/icons.js"></script>
+<script src="/survey.js"></script>
+</body>
+</html>

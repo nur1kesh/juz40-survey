@@ -1,0 +1,17 @@
+# секреттер мен жергілікті баптаулар
+.env
+.env.*
+!.env.example
+
+# тәуелділіктер және жасалатын файлдар
+node_modules/
+data/
+*.log
+*.migrated-*
+*.corrupt-*
+
+# жүйелік
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

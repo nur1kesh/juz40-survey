@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>JUZ40 Survey — Аналитика</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0D5B6C">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div id="loginView" class="login hidden">
+  <div class="card">
+    <span class="mark"><i></i>JUZ40</span>
+    <h1 style="font-size:28px;margin:20px 0 6px">Аналитика</h1>
+    <p class="muted" style="margin:0 0 18px">Кіру үшін құпиясөзді енгізіңіз</p>
+    <form id="loginForm">
+      <input type="password" id="pw" placeholder="Құпиясөз" autocomplete="current-password" required>
+      <div class="err" role="alert" id="loginErr"></div>
+      <button class="btn" style="width:100%;margin-top:14px" type="submit">Кіру</button>
+    </form>
+  </div>
+</div>
+
+<div id="adminView" class="hidden">
+<div class="adminhead"><div class="wide">
+  <div class="topbar">
+    <span class="mark"><i></i>JUZ40 · Сауалнама аналитикасы</span>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="stats" aria-selected="true">Аналитика</button>
+        <button role="tab" data-tab="ai" aria-selected="false">AI-инсайт</button>
+        <button role="tab" data-tab="table" aria-selected="false">Жауаптар</button>
+      </div>
+      <select id="period" aria-label="Кезең"><option value="0">Барлық уақыт</option><option value="7">Соңғы 7 күн</option><option value="30">Соңғы 30 күн</option><option value="90">Соңғы 90 күн</option></select>
+      <button class="btn small ghost" id="copyLink" type="button" title="Сауалнама сілтемесін алу">Сілтеме</button>
+      <a class="btn small ghost" href="/" target="_blank" rel="noopener" title="Сауалнаманы жаңа бетте ашу">Сауалнама</a>
+      <button class="btn small ghost" id="logout" type="button" title="Аккаунттан шығу">Шығу</button>
+    </div>
+  </div>
+</div></div>
+<main class="wide pull">
+  <div class="metrics" id="metrics"></div>
+
+  <div class="usage" id="usageLine"></div>
+
+  <section id="tab-stats">
+    <div class="panel full" style="margin-bottom:16px">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="margin:0">AI қорытынды: негізгі мәселелер мен ұсыныстар</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn small ghost" id="aiBtn">AI-талдау</button>
+          <button class="btn small" id="digestBtn">Қорытынды жасау</button>
+        </div>
+      </div>
+      <div class="digest muted" id="digest">Барлық жауаптар бойынша қысқа қорытынды жасау үшін батырманы басыңыз.</div>
+      <div class="muted" style="font-size:13px;margin-top:10px" id="digestMeta"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3>Орташа баға динамикасы (апта бойынша)</h3><div id="weekly"></div></div>
+      <div class="panel"><h3>Бағалардың таралуы (0–10)</h3><div class="cols" id="scoreCols"></div>
+        <div class="legend" style="margin-top:12px"><span><i style="background:var(--neg)"></i>0–6 сынаушылар</span><span><i style="background:var(--mid)"></i>7–8 бейтарап</span><span><i style="background:var(--pos)"></i>9–10 жақтаушылар</span></div></div>
+      <div class="panel"><h3>Күтуі қаншалықты ақталды</h3><div class="bars" id="expBars"></div></div>
+      <div class="panel"><h3>Не ұнады</h3><div class="bars" id="likedBars"></div></div>
+      <div class="panel"><h3>Қай жерде қиындық болды</h3><div class="bars" id="issueBars"></div></div>
+      <div class="panel"><h3>Оқушылар сегменттері (NPS)</h3><div id="segments"></div></div>
+      <div class="panel full"><h3>Күшті және әлсіз жақтар: ұнағаны мен қиындығы</h3><div id="swot"></div></div>
+      <div class="panel full"><h3>Жауаптарда жиі кездесетін сөздер</h3><div class="cloud" id="cloud"></div></div>
+    </div>
+  </section>
+
+  <section id="tab-ai" class="hidden">
+    <div class="panel full" style="margin-bottom:16px">
+      <h3 style="display:flex;align-items:center;gap:8px"><i data-icon="message-circle-question"></i>Деректен сұраңыз</h3>
+      <form id="askForm" style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="text" id="askQ" maxlength="500" placeholder="Мысалы: Платформаға шағымданғандардың орташа бағасы қандай? Кімді қайтаруға болады?" style="flex:1;min-width:240px">
+        <button class="btn" id="askBtn" type="submit">Сұрау</button>
+      </form>
+      <div class="chips" style="margin-top:12px" id="askChips"></div>
+      <div class="digest" id="askOut" style="margin-top:14px"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel full">
+        <div class="phead"><h3><i data-icon="layers"></i>Негізгі тақырыптар (AI кластерлеу)</h3><button class="btn small" id="themesBtn">Тақырыптарды табу</button></div>
+        <div id="themes" class="cards"></div><div class="muted meta" id="themesMeta"></div>
+      </div>
+      <div class="panel full" id="catPanel">
+        <h3><i data-icon="target"></i>AI: мәселе категориялары</h3>
+        <p class="muted" style="margin:-6px 0 12px;font-size:13px">Категорияны басыңыз: сол санаттағы оқушылардың сауалнама жауаптары толық көрсетіледі.</p>
+        <div class="bars" id="catBars"></div>
+        <div id="catDetail" class="catdetail hidden"></div>
+      </div>
+      <div class="panel full" id="sentPanel">
+        <h3><i data-icon="smile"></i>AI: Sentiment</h3>
+        <p class="muted" style="margin:-6px 0 12px;font-size:13px">Түсті немесе батырманы басыңыз: сол тональділіктегі оқушылардың сауалнама жауаптары толық көрсетіледі.</p>
+        <div class="split" id="sentSplit"></div>
+        <div class="sentbtns" id="sentBtns"></div>
+        <div id="sentDetail" class="catdetail hidden"></div>
+      </div>
+      <div class="panel full" id="impPanel">
+        <div class="phead"><h3><i data-icon="alert-triangle"></i>Маңыздылығы бойынша пікірлер</h3><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><div class="seg" id="impTabs"></div><button class="btn small ghost" type="button" id="impAll">Барлығын ашу</button></div></div>
+        <p class="muted" style="margin:-6px 0 12px;font-size:13px">Жолды басыңыз: қай оқушының сауалнамасы екені және оның барлық жауабы ашылады.</p>
+        <div class="issue-list" id="impList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-table" class="hidden">
+    <div class="toolbar">
+      <input type="search" id="fSearch" placeholder="Жауаптардан іздеу">
+      <select id="fExp" aria-label="Күтуі"><option value="">Күтуі: барлығы</option></select>
+      <select id="fSent" aria-label="Sentiment"><option value="">Sentiment: барлығы</option><option>Negative</option><option>Neutral</option><option>Positive</option></select>
+      <select id="fImp" aria-label="Маңыздылығы"><option value="">Маңыздылығы: барлығы</option><option>High</option><option>Medium</option><option>Low</option></select>
+      <select id="fSort" aria-label="Сұрыптау"><option value="new">Жаңалары бірінші</option><option value="old">Ескілері бірінші</option><option value="low">Баға: төменнен</option><option value="high">Баға: жоғарыдан</option></select>
+      <div class="daterange" role="group" aria-label="Күн мен уақыт аралығы">
+        <label class="dt"><span>Бастап</span><input type="datetime-local" id="fFrom"></label>
+        <label class="dt"><span>Дейін</span><input type="datetime-local" id="fTo"></label>
+        <div class="quick">
+          <button class="btn small ghost" type="button" data-q="today">Бүгін</button>
+          <button class="btn small ghost" type="button" data-q="7">7 күн</button>
+          <button class="btn small ghost" type="button" data-q="30">30 күн</button>
+          <button class="btn small ghost" type="button" id="fClear">Тазалау</button>
+        </div>
+      </div>
+      <span class="spacer"></span>
+      <a class="btn small" id="xlsxBtn" href="/api/admin/export.xlsx" title="Excel файлын жүктеу (2 парақ: жауаптар және қорытынды)">Excel жүктеу</a>
+      <a class="btn small ghost" id="csvBtn" href="/api/admin/export.csv">CSV жүктеу</a>
+      <a class="btn small ghost" href="/api/admin/backup.json">Сақтық көшірме</a>
+    </div>
+    <div class="table-wrap">
+      <table class="main">
+        <thead><tr><th>ID</th><th>Күні</th><th>Баға</th><th>Күтуі ақталды</th><th>Ұнады</th><th>Ұнамады</th><th>Ұсыныс</th><th>Категория</th><th>Sentiment</th><th>Маңыздылығы</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty hidden" id="emptyTable">Әзірге жауап жоқ. Сауалнама сілтемесін кетіп қалған оқушыларға жіберіңіз — жауаптар осында автоматты түрде түседі.</div>
+    </div>
+    <div style="text-align:center;margin-top:14px"><div class="muted" id="tblCount" style="margin-bottom:10px"></div><button class="btn ghost hidden" id="moreBtn" type="button">Көбірек көрсету</button></div>
+  </section>
+</main>
+</div>
+
+<div id="drawerRoot"></div>
+<div id="toast" class="toast hidden" role="status"></div>
+<script src="/icons.js"></script>
+<script src="/admin.js"></script>
+</body>
+</html>
